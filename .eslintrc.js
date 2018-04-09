@@ -42,6 +42,7 @@ module.exports = {
     // 缩进为4个空格
     // 'indent': ["error", 4],
     'no-unused-vars': ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": true }],
+    'linebreak-style': 'off',
   },
   globals: {
     App: true,
