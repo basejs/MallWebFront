@@ -7,7 +7,7 @@ import {
   getStorage,
   removeStorage,
   clearStorage,
-  toast,
+  showToast,
 } from './rewrite';
 
 const api = {
@@ -27,7 +27,7 @@ api.getUserInfoByServer = (infoP) => {
       if (!info) {
         info = await getUserInfo();
       }
-      toast({title: 'test'});
+      showToast({ type: 'error', title: 'test', duration: 9999999, mask: false });
       let result = {};
       console.log(info);
     } catch (e) {

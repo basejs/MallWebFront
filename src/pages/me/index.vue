@@ -8,10 +8,12 @@
       </div>
     </div>
     <button @tap="getUserInfo">点击登录</button>
+    <button @tap="showModal">点击</button>
   </div>
 </template>
 <script>
   import api from '@/utils/api';
+  import { showModal } from '@/utils/tools';
 
   export default {
     data() {
@@ -32,6 +34,9 @@
           console.log(e);
         }
         return 1;
+      },
+      showModal() {
+        showModal({ content: 'This is model!' }).then((data) => { console.log(data); }).catch((data) => { console.log(data); });
       },
     },
   };
