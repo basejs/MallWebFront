@@ -1,10 +1,100 @@
+/* eslint-disable */
 <template>
   <div class="container">
+    <div class="header">
+      <div class="header_content">
+        <image class="avatarUrl" :src="avatarUrl"></image>
+        <p class="nickName cfff">{{nickName}}</p>
+      </div>
+    </div>
+    <button @tap="getUserInfo">点击登录</button>
   </div>
 </template>
 <script>
-export default {
-};
+  import api from '@/utils/api';
+
+  export default {
+    data() {
+      return {
+        avatarUrl: '',
+        nickName: '',
+        bShowBind: false,
+      };
+    },
+  
+    methods: {
+      async getUserInfo() {
+        try {
+          const loginRes = await api.login();
+          const infoRes = await api.getUserInfoByServer();
+          console.log(infoRes);
+        } catch (e) {
+          console.log(e);
+        }
+        return 1;
+      },
+    },
+  };
 </script>
-<style scoped>
+<style scoped lang="scss">
+  .header {
+    background: #ff6a3c;
+    height: 260rpx;
+    width: 100%;
+  }
+  
+  .header_content {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 48rpx;
+  }
+  
+  .avatarUrl {
+    width: 122rpx;
+    height: 122rpx;
+    border-radius: 1000px;
+  }
+  
+  .nickName {
+    font-size: 30rpx;
+    padding-top: 15rpx;
+  }
+  
+  .info_block {
+    margin-top: 10rpx;
+    .item {
+      border-top: 1rpx solid #dbdbdb;
+      background: #fff;
+      padding: 34rpx 28rpx;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .item:last-child {
+      border-bottom: 1rpx solid #dbdbdb;
+    }
+    .item_content {
+      display: flex;
+      align-items: center;
+      .text {
+        margin-left: 20rpx;
+        color: #1a1a1a;
+      }
+    }
+    .item_img {
+      width: 42rpx;
+      height: 42rpx;
+    }
+    .arrow {
+      color: #cccccc;
+      font-size: 32rpx;
+    }
+    .tip {
+      color: #999;
+      font-size: 24rpx;
+      margin-top: 20rpx;
+      margin-left: 60rpx;
+    }
+  }
 </style>

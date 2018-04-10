@@ -40,7 +40,7 @@ module.exports = {
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     // 缩进为4个空格
-    // 'indent': ["error", 4],
+// 'indent': ["error", 4],
     'no-unused-vars': ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": true }],
     'linebreak-style': 'off',
   },

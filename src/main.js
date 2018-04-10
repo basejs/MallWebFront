@@ -19,9 +19,10 @@ export default {
     pages: ['^pages/index/main'],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
+      navigationBarBackgroundColor: '#F7F7FA',
+      navigationBarTitleText: 'Me超市',
       navigationBarTextStyle: 'black',
+      backgroundColor: '#F0F2F5',
     },
     tabBar: {
       backgroundColor: '#F7F7FA',
@@ -30,12 +31,18 @@ export default {
       list: [{
         text: '推荐',
         pagePath: 'pages/index/main',
+        iconPath: 'static/img/com.png',
+        selectedIconPath: 'static/img/com_a.png',
       }, {
         text: '购物车',
         pagePath: 'pages/shopping_cart/main',
+        iconPath: 'static/img/cart.png',
+        selectedIconPath: 'static/img/cart_a.png',
       }, {
         text: '我的',
         pagePath: 'pages/me/main',
+        iconPath: 'static/img/my.png',
+        selectedIconPath: 'static/img/my_a.png',
       }],
     },
   },
