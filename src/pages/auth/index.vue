@@ -1,17 +1,18 @@
 <template>
   <div class="container">
+    <button @click="openAuth">开通权限</button>
   </div>
 </template>
 <script>
   import api from '@/utils/api';
   
   export default {
-    async onShow() {
-      if (await api.getAuth() === false) {
-        this.$router.push({ path: '/pages/auth/index' });
-      }
+    methods: {
+      openAuth() {
+        api.openAuth();
+      },
     },
   };
 </script>
-<style scoped>
+<style lang="scss" scoped>
 </style>

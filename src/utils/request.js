@@ -1,5 +1,5 @@
 import Fly from 'flyio';
-import { log, showToast, showNavigationBarLoading, hideNavigationBarLoading } from './tools';
+import { log, showNavigationBarLoading, hideNavigationBarLoading } from './tools';
 
 const request = new Fly();
 

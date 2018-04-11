@@ -1,11 +1,12 @@
 import api from '@/utils/api';
 import { log } from '@/utils/tools';
+import { EXIT, LOGIN } from '../mutation-types';
 
 const user = {
   state: {
     info: {
-      userInfo: {},
-      sessionId: '',
+      userInfo: { no: true },
+      sessionId: undefined,
     },
   },
   getters: {
@@ -14,29 +15,29 @@ const user = {
     },
   },
   mutations: {
-    login(state, info) {
+    [LOGIN](state, info) {
       state.info = Object.assign({}, this.info, info);
     },
-    exit(state) {
+    [EXIT](state) {
       state.info = {
-        userInfo: {},
-        sessionId: '',
+        userInfo: { no: true },
+        sessionId: undefined,
       };
     },
   },
   actions: {
-    async login({ commit }, info) {
+    async [LOGIN]({ commit }, info) {
       try {
         // 本地储存只存sessionId
         await api.setStorage({ sessionId: info.sessionId });
       } catch (e) {
         log('store: ', e);
       }
-      commit('login', info);
+      commit(LOGIN, info);
     },
-    async exit({ commit }, info) {
+    async [EXIT]({ commit }) {
       api.removeStorage('sessionId');
-      commit('exit');
+      commit(EXIT);
     },
   },
 };

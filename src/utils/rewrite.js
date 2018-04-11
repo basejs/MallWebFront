@@ -27,7 +27,7 @@ export function setStorage(obj) {
 
 export function getStorage(key) {
   return new Promise((resolve, reject) => {
-    wx.getStorage({ key, success: resolve, fail: reject });
+    wx.getStorage({ key, success: (res) => { resolve(res.data); }, fail: reject });
   });
 }
 
@@ -141,4 +141,35 @@ export function showNavigationBarLoading() {
 
 export function hideNavigationBarLoading() {
   wx.hideNavigationBarLoading();
+}
+
+// 跳转
+export function redirect(url) {
+  return new Promise((resolve, reject) => {
+    wx.redirectTo({ url, success: resolve, fail: reject });
+  });
+}
+
+// 开通权限界面
+export function openAuth() {
+  return new Promise((resolve, reject) => {
+    wx.openSetting({ success: resolve, fail: reject });
+  });
+}
+
+// 获取权限界面
+export async function getAuth(type = 'USERINFO') {
+  const { authSetting } = await new Promise((resolve, reject) => {
+    wx.getSetting({ success: resolve, fail: reject });
+  });
+  
+  let result = false;
+  switch (type) {
+    case 'USERINFO':
+      result = authSetting['scope.userInfo'];
+      break;
+    default: break;
+  }
+  
+  return result;
 }

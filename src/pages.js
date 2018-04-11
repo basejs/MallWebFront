@@ -1,21 +1,27 @@
 module.exports = [
   {
-    path: '/pages/me/index', // 页面路径，同时是 vue 文件相对于 src 的路径
-    config: { // 页面配置，即 page.json 的内容
+    path: '/pages/index/index',
+    config: {
       navigationBarTitleText: 'Me超市',
-    },
-  },
-  {
-    path: '/pages/index/index', // 页面路径，同时是 vue 文件相对于 src 的路径
-    config: { // 页面配置，即 page.json 的内容
-      navigationBarTitleText: '推荐',
       enablePullDownRefresh: true,
     },
   },
   {
-    path: '/pages/shopping_cart/index', // 页面路径，同时是 vue 文件相对于 src 的路径
-    config: { // 页面配置，即 page.json 的内容
+    path: '/pages/shopping_cart/index',
+    config: {
       navigationBarTitleText: '购物车',
+    },
+  },
+  {
+    path: '/pages/me/index',
+    config: {
+      navigationBarTitleText: '我的',
+    },
+  },
+  {
+    path: '/pages/auth/index',
+    config: {
+      navigationBarTitleText: 'Me超市',
     },
   },
 ];

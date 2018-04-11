@@ -7,9 +7,13 @@ import {
   getStorage,
   removeStorage,
   clearStorage,
+  redirect,
+  openAuth,
+  getAuth,
 } from './rewrite';
 import req from './request';
 import { log, showToast } from './tools';
+import { EXIT, LOGIN } from '@/store/mutation-types';
 
 const api = {
   wx,
@@ -19,31 +23,46 @@ const api = {
   getStorage,
   removeStorage,
   clearStorage,
+  redirect,
+  openAuth,
+  getAuth,
 };
 
+// 验证我方sessionId是否合法
 api.testSessionId = async (sid) => {
   return true;
 }
 
+// 登录
 api.login = async () => {
   const store = require('../store/main').default;
   const info = store.getters['user/getInfo'];
-  const sid = info.sessionId || getStorage('sessonId');
-  console.log(info, sid);
+  let sidFromSto;
+  try {
+    sidFromSto = await getStorage('sessionId');
+  } catch (e) {
+    sidFromSto = undefined;
+  }
+  const sid = info.sessionId || sidFromSto;
   if (sid && await api.testSessionId(sid)) {
-    await store.dispatch('user/login', { sessionId: sid, userInfo: info.userInfo || await getUserInfo() });
+    // 1.sessionId还未失效
+    await store.dispatch('user/' + LOGIN, {
+      sessionId: sid,
+      userInfo: info.userInfo.no ? await getUserInfo() : info.userInfo,
+    });
     return;
   }
-  // 未登录过或者sessionId失效
+  // 2.未登录过或者sessionId失效
   try {
     const { code } = await login();
+    console.log(code);
     if (!code) throw('登录失败');
     // 把code发往我方服务器
 //  const sessionId = await req.post('/login', { code });
-    const sessionId = 'this is sessionId';
     // 模拟
+    const sessionId = 'this is sessionId';
     const userInfo = await getUserInfo();
-    await store.dispatch('user/login', { sessionId, userInfo });
+    await store.dispatch('user/' + LOGIN, { sessionId, userInfo });
     showToast({ title: '登录成功' });
   } catch (e) {
     log('api: ', e);
@@ -51,7 +70,7 @@ api.login = async () => {
       type: 'error',
       title: '登录失败',
     });
-    store.dispatch('user/exit');
+    store.dispatch('user/' + EXIT);
   }
 };
 

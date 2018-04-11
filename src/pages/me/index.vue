@@ -7,6 +7,7 @@
       </div>
     </div>
     <button @tap="getUserInfo">点击登录</button>
+    <button @tap="exit">点击退出</button>
   </div>
 </template>
 <script>
@@ -25,7 +26,11 @@
   
     methods: {
       async getUserInfo() {
-         await api.login();
+        await api.login();
+      },
+      exit() {
+        this.$store.dispatch('user/EXIT');
+        console.log(this.$store.getters['user/getInfo']);
       },
     },
   };
