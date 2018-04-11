@@ -1,7 +1,10 @@
 // vuex
 import store from '@/store/main';
 import Vue from 'vue';
-import App from './App';
+import MpvueRouterPatch from 'mpvue-router-patch';
+import App from '@/App';
+
+Vue.use(MpvueRouterPatch);
 
 Vue.config.productionTip = false;
 App.mpType = 'app';
@@ -16,7 +19,7 @@ export default {
   // 这个字段走 app.json
   config: {
     // 页面前带有 ^ 符号的，会被编译成首页，其他页面可以选填，我们会自动把 webpack entry 里面的入口页面加进去
-    pages: ['^pages/index/main'],
+    pages: ['^pages/index/index'],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#F7F7FA',
@@ -30,17 +33,17 @@ export default {
       selectedColor: '#000',
       list: [{
         text: '推荐',
-        pagePath: 'pages/index/main',
+        pagePath: 'pages/index/index',
         iconPath: 'static/img/com.png',
         selectedIconPath: 'static/img/com_a.png',
       }, {
         text: '购物车',
-        pagePath: 'pages/shopping_cart/main',
+        pagePath: 'pages/shopping_cart/index',
         iconPath: 'static/img/cart.png',
         selectedIconPath: 'static/img/cart_a.png',
       }, {
         text: '我的',
-        pagePath: 'pages/me/main',
+        pagePath: 'pages/me/index',
         iconPath: 'static/img/my.png',
         selectedIconPath: 'static/img/my_a.png',
       }],

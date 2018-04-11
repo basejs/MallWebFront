@@ -1,5 +1,6 @@
 var path = require('path')
 var fs = require('fs')
+var genEntry = require('mpvue-entry')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
@@ -22,7 +23,8 @@ function getEntry (rootSrc, pattern) {
 
 const appEntry = { app: resolve('./src/main.js') }
 const pagesEntry = getEntry(resolve('./src'), 'pages/**/main.js')
-const entry = Object.assign({}, appEntry, pagesEntry)
+//const entry = Object.assign({}, appEntry, pagesEntry)
+const entry = genEntry('./src/pages.js');
 
 module.exports = {
   // 如果要自定义生成的 dist 目录里面的文件路径，
@@ -64,7 +66,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        include: [resolve('src'), resolve('test')],
+        include: [resolve('src'), resolve('node_modules/mpvue-entry')],
         use: [
           'babel-loader',
           {
@@ -72,7 +74,7 @@ module.exports = {
             options: {
               checkMPEntry: true
             }
-          },
+          }
         ]
       },
       {

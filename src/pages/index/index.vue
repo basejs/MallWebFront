@@ -5,6 +5,9 @@
 </template>
 <script>
   export default {
+    onShow() {
+      console.log('mounted', this.$store);
+    },
   };
 </script>
 <style lang="scss" scoped>

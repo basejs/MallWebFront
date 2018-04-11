@@ -9,6 +9,7 @@
     </div>
     <button @tap="getUserInfo">点击登录</button>
     <button @tap="showModal">点击</button>
+    <router-link to="{path:'index/index'}">点击跳转</router-link>
   </div>
 </template>
 <script>
@@ -38,6 +39,9 @@
       showModal() {
         showModal({ content: 'This is model!' }).then((data) => { console.log(data); }).catch((data) => { console.log(data); });
       },
+    },
+    onShow() {
+      console.log('mounted', this.$store);
     },
   };
 </script>
