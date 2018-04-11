@@ -4,9 +4,10 @@
   </div>
 </template>
 <script>
+  import store from '@/store/main';
+  
   export default {
-    onShow() {
-      console.log('mounted', this.$store);
+    beforeCreate() {
     },
   };
 </script>

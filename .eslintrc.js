@@ -43,6 +43,9 @@ module.exports = {
 // 'indent': ["error", 4],
     'no-unused-vars': ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": true }],
     'linebreak-style': 'off',
+    'no-param-reassign': 'off',
+    'no-empty': 'off',
+    'no-trailing-spaces': 'off',
   },
   globals: {
     App: true,

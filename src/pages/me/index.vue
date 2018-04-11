@@ -1,4 +1,3 @@
-/* eslint-disable */
 <template>
   <div class="container">
     <div class="header">
@@ -8,11 +7,10 @@
       </div>
     </div>
     <button @tap="getUserInfo">点击登录</button>
-    <button @tap="showModal">点击</button>
-    <router-link to="{path:'index/index'}">点击跳转</router-link>
   </div>
 </template>
 <script>
+/* eslint-disable */
   import api from '@/utils/api';
   import { showModal } from '@/utils/tools';
 
@@ -27,21 +25,8 @@
   
     methods: {
       async getUserInfo() {
-        try {
-          const loginRes = await api.login();
-          const infoRes = await api.getUserInfoByServer();
-          console.log(infoRes);
-        } catch (e) {
-          console.log(e);
-        }
-        return 1;
+         await api.login();
       },
-      showModal() {
-        showModal({ content: 'This is model!' }).then((data) => { console.log(data); }).catch((data) => { console.log(data); });
-      },
-    },
-    onShow() {
-      console.log('mounted', this.$store);
     },
   };
 </script>
