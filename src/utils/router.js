@@ -12,8 +12,8 @@ function parseUrl(location, byRouter = true) {
   
   let { path, query } = location;
   // 标记这次跳转是由router来控制的
-  byRouter && (query = Object.assign({}, query || {}, {byRouter: true}));
-  const queryStr = queryString.stringify(query)
+  byRouter && (query = Object.assign({}, query || {}, {byRouter: 'true'}));
+  const queryStr = queryString.stringify(query);
 
   return `${path}?${queryStr}`
 }
@@ -47,10 +47,26 @@ function parseRoute($mp) {
 function _getPageInfo(path) {
   for (let i = 0; i < routes.length; i++) {
     if (routes[i].path == path) {
-      return routes[i];
+      return _deepCopy(routes[i]);
     }
   }
 }
+
+function _deepCopy(p, c) {  
+  var c = c || {};  
+  for (var i in p) {  
+    if(! p.hasOwnProperty(i)){  
+      continue;  
+    }  
+    if (typeof p[i] === 'object') {  
+      c[i] = (p[i].constructor === Array) ? [] : {};  
+      _deepCopy(p[i], c[i]);  
+    } else {  
+      c[i] = p[i];  
+    }  
+  }  
+  return c;  
+} 
 
 let _beforeEachHandle;
 
@@ -59,10 +75,8 @@ function beforeEach(fn) {
     _beforeEachHandle = fn;
 };
 
-async function _catchBeforeEach (location) {
+async function _catchBeforeEach (location, fr) {
   let isNext = true;
-  
-  console.log(3, location);
   
   function next(info, ...rest) {
     if (typeof info === 'boolean') {
@@ -80,27 +94,67 @@ async function _catchBeforeEach (location) {
       }
     }
   }
-  
   try {
+    const to = _getPageInfo(location.path);
+    to.location = location;
     _beforeEachHandle &&
-    await _beforeEachHandle(location, _getPageInfo(location.path), next);
+      await _beforeEachHandle(to, fr, next);
+      //to, from, next
   } catch (e) {
     log('router _catchBeforeEach: ', e);
   }
-  console.log(4, isNext, location);
   
   return isNext;
 }
 
-async function push(location, complete, fail, success, beforeEnter) {
-  const lct = _reParseUrl(location);
+async function _catchBeforeEnter (location, fr, fn) {
+  let isNext = true;
   
-  if (!(await _catchBeforeEach(lct))) return;
-  if (beforeEnter) {
-    if (!(await beforeEnter(lct, _getPageInfo(lct.path), next))) return;
+  function next(info, ...rest) {
+    if (typeof info === 'boolean') {
+      isNext = info;
+    } else if (typeof info == 'number') {
+      isNext = false;
+      go(info);
+    } else {
+      isNext = false;
+      if (info.replace == true) {
+        delete info.replace;
+        replace(info, ...rest)
+      } else {
+        push(info, ...rest);
+      }
+    }
+  }
+  try {
+    const to = _getPageInfo(location.path);
+    to.location = location;
+    fn &&
+      await fn(to, fr, next);
+      //to, from, next
+  } catch (e) {
+    log('router _catchBeforeEach: ', e);
+  }
+  console.log(4, isNext);
+  return isNext;
+}
+
+async function push(location, complete, fail, success) {
+  const url = parseUrl(location);
+  const lct = _reParseUrl(url);
+  
+  const cps = getCurrentPages();
+  const fr = _getPageInfo('/' + cps[cps.length-1].route);
+  fr.location = _deepCopy(this.currentRoute);
+  
+  if (!(await _catchBeforeEach(lct, fr))) return;
+  
+  const to = _getPageInfo(lct.path);
+  if (typeof to.beforeEnter === 'function') {
+    console.log('beforeEnter');
+    if (!(await _catchBeforeEnter(lct, fr, to.beforeEnter))) return;
   }
   
-  const url = parseUrl(location)
   const params = { url, complete, fail, success }
   if (location.isTab) {
     wx.switchTab(params);
@@ -114,9 +168,15 @@ async function push(location, complete, fail, success, beforeEnter) {
 }
 
 async function replace(location, complete, fail, success) {
-  if (!(await _catchBeforeEach(location))) return;
-  
   const url = parseUrl(location);
+  const lct = _reParseUrl(url);
+  
+  const cps = getCurrentPages();
+  const fr = _getPageInfo('/' + cps[cps.length-1].route);
+  fr.location = _deepCopy(this.currentRoute);
+  
+  if (!(await _catchBeforeEach(lct, fr))) return;
+  
   wx.redirectTo({ url, complete, fail, success });
 }
 

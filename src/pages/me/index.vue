@@ -9,7 +9,6 @@
     <button @tap="getUserInfo">点击登录</button>
     <button @tap="exit">点击退出</button>
     <button @click="goCart">购物车</button>
-    <button @click="goAuth">auth</button>
   </div>
 </template>
 <script>
@@ -40,13 +39,10 @@
       goCart() {
         this.$router.push({ path: '/pages/shopping_cart/index', isTab: true });
       },
-      goAuth() {
-        this.$router.push({ path: '/pages/auth/index' }, undefined, undefined,
-        undefined, async () => { return false; });
-      },
     },
     onShow() {
-      console.log(wx.getCurrentPages);
+    },
+    onReady() {
     },
   };
 </script>

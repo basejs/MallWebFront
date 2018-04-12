@@ -6,8 +6,8 @@ import App from '@/App';
 import api from '@/utils/api';
 import { showModal } from '@/utils/tools';
 
-Router.beforeEach(async (location, toRoute, next) => {
-  if (toRoute.meta && toRoute.meta.checkLoginAuth) {
+Router.beforeEach(async (to, from, next) => {
+  if (to.meta && to.meta.checkLoginAuth) {
     const auth = await api.getAuth();
     showModal({ content: `${auth}` });
     if (auth === false) {

@@ -31,5 +31,14 @@ module.exports = [
     config: {
       navigationBarTitleText: '权限控制',
     },
+    beforeEnter: async (to, from, next) => {
+      await next(false);
+    },
+  },
+  {
+    path: '/pages/detail/index',
+    config: {
+      navigationBarTitleText: '详情',
+    },
   },
 ];
