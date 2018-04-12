@@ -12,6 +12,8 @@
         api.openAuth();
       },
     },
+    onShow() {
+    },
   };
 </script>
 <style lang="scss" scoped>

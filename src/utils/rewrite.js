@@ -143,13 +143,6 @@ export function hideNavigationBarLoading() {
   wx.hideNavigationBarLoading();
 }
 
-// 跳转
-export function redirect(url) {
-  return new Promise((resolve, reject) => {
-    wx.redirectTo({ url, success: resolve, fail: reject });
-  });
-}
-
 // 开通权限界面
 export function openAuth() {
   return new Promise((resolve, reject) => {

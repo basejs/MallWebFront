@@ -1,10 +1,25 @@
 // vuex
 import store from '@/store/main';
 import Vue from 'vue';
-import MpvueRouterPatch from 'mpvue-router-patch';
+import Router from '@/utils/router';
 import App from '@/App';
+import api from '@/utils/api';
+import { showModal } from '@/utils/tools';
 
-Vue.use(MpvueRouterPatch);
+Router.beforeEach(async (location, toRoute, next) => {
+  if (toRoute.meta && toRoute.meta.checkLoginAuth) {
+    const auth = await api.getAuth();
+    showModal({ content: `${auth}` });
+    if (auth === false) {
+      // { path: '/pages/auth/index' }
+      next(false);
+      return;
+    } 
+  }
+  next(true);
+});
+
+Vue.use(Router);
 
 Vue.config.productionTip = false;
 App.mpType = 'app';

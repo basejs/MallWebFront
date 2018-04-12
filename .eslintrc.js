@@ -46,6 +46,7 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-empty': 'off',
     'no-trailing-spaces': 'off',
+    'prefer-default-export': 'off',
   },
   globals: {
     App: true,

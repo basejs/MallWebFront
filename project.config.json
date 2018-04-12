@@ -11,6 +11,7 @@
 	"compileType": "miniprogram",
 	"appid": "wx73d137448a855c7d",
 	"projectname": "mall",
+	"libVersion": "1.9.9",
 	"condition": {
 		"search": {
 			"current": -1,

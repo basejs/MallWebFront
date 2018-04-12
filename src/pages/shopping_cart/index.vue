@@ -3,14 +3,10 @@
   </div>
 </template>
 <script>
-  import api from '@/utils/api';
+  import { tabMixin } from '@/components/mixin';
   
   export default {
-    async onShow() {
-      if (await api.getAuth() === false) {
-        this.$router.push({ path: '/pages/auth/index' });
-      }
-    },
+    mixins: [tabMixin],
   };
 </script>
 <style scoped>

@@ -7,7 +7,6 @@ import {
   getStorage,
   removeStorage,
   clearStorage,
-  redirect,
   openAuth,
   getAuth,
 } from './rewrite';
@@ -23,7 +22,6 @@ const api = {
   getStorage,
   removeStorage,
   clearStorage,
-  redirect,
   openAuth,
   getAuth,
 };

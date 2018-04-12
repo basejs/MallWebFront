@@ -8,14 +8,19 @@
     </div>
     <button @tap="getUserInfo">点击登录</button>
     <button @tap="exit">点击退出</button>
+    <button @click="goCart">购物车</button>
+    <button @click="goAuth">auth</button>
   </div>
 </template>
 <script>
 /* eslint-disable */
   import api from '@/utils/api';
   import { showModal } from '@/utils/tools';
+  import { tabMixin } from '@/components/mixin';
 
   export default {
+    mixins: [tabMixin],
+    
     data() {
       return {
         avatarUrl: '',
@@ -32,6 +37,16 @@
         this.$store.dispatch('user/EXIT');
         console.log(this.$store.getters['user/getInfo']);
       },
+      goCart() {
+        this.$router.push({ path: '/pages/shopping_cart/index', isTab: true });
+      },
+      goAuth() {
+        this.$router.push({ path: '/pages/auth/index' }, undefined, undefined,
+        undefined, async () => { return false; });
+      },
+    },
+    onShow() {
+      console.log(wx.getCurrentPages);
     },
   };
 </script>

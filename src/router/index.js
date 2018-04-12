@@ -11,17 +11,25 @@ module.exports = [
     config: {
       navigationBarTitleText: '购物车',
     },
+    meta: {
+      checkLoginAuth: true,
+      mustLogin: true,
+    },
   },
   {
     path: '/pages/me/index',
     config: {
       navigationBarTitleText: '我的',
     },
+    meta: {
+      checkLoginAuth: true,
+      mustLogin: true,
+    },
   },
   {
     path: '/pages/auth/index',
     config: {
-      navigationBarTitleText: 'Me超市',
+      navigationBarTitleText: '权限控制',
     },
   },
 ];

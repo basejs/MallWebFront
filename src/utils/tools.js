@@ -8,8 +8,10 @@ export {
   vibrateShort, showNavigationBarLoading, hideNavigationBarLoading,
 };
 
+/* eslint-disable */
 export function log(...rest) {
   console.log('%c--------------------------->', 'color: pink');
   console.log(...rest);
   console.log('%c<---------------------------', 'color: pink');
 }
+/* eslint-able */
