@@ -151,7 +151,7 @@ export function openAuth() {
 }
 
 // 获取权限界面
-export async function getAuth(type = 'USERINFO') {
+export async function getAuth(type = 'ALL') {
   const { authSetting } = await new Promise((resolve, reject) => {
     wx.getSetting({ success: resolve, fail: reject });
   });
@@ -160,6 +160,9 @@ export async function getAuth(type = 'USERINFO') {
   switch (type) {
     case 'USERINFO':
       result = authSetting['scope.userInfo'];
+      break;
+    case 'ALL':
+      result = authSetting;
       break;
     default: break;
   }

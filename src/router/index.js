@@ -32,7 +32,6 @@ module.exports = [
       navigationBarTitleText: '权限控制',
     },
     beforeEnter: async (to, from, next) => {
-      console.log('auth beforeEnter: ', to, from);
       await next(true);
     },
   },
@@ -46,7 +45,6 @@ module.exports = [
       mustLogin: true,
     },
     beforeEnter: async (to, from, next) => {
-      console.log('detail beforeEnter: ', to, from);
       await next({ path: '/pages/me/index', isTab: true });
     },
   },

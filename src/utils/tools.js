@@ -1,10 +1,10 @@
 import {
-  showToast, hideToast, showLoading, showModal, hideLoading,
+  showToast, hideToast, showLoading, hideLoading, showModal,
   vibrateShort, showNavigationBarLoading, hideNavigationBarLoading,
 } from './rewrite';
 
 export {
-  showToast, hideToast, showLoading, showModal, hideLoading,
+  showToast, hideToast, showLoading, hideLoading, showModal,
   vibrateShort, showNavigationBarLoading, hideNavigationBarLoading,
 };
 

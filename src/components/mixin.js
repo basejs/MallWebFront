@@ -4,7 +4,7 @@ export const tabMixin = {
       this.$router.push({
         path: this.$router.currentRoute.path,
         isTab: true,
-        query: { hahah: 123 },
+        query: { isTab: true },
       });
     }
   },

@@ -12,7 +12,9 @@ import {
 } from './rewrite';
 import req from './request';
 import { log, showToast } from './tools';
-import { EXIT, LOGIN } from '@/store/mutation-types';
+import { EXIT, LOGIN, UPDATE_AUTH } from '@/store/mutation-types';
+
+let store;
 
 const api = {
   wx,
@@ -23,8 +25,16 @@ const api = {
   removeStorage,
   clearStorage,
   openAuth,
-  getAuth,
 };
+
+api.getAuth = async (type) => {
+  store = store || require('../store/main').default;
+  const info = await getAuth();
+  store.dispatch('user/' + UPDATE_AUTH, info);
+  
+  const result = !type ? info : info[type];
+  return result;
+}
 
 // 验证我方sessionId是否合法
 api.testSessionId = async (sid) => {
@@ -33,7 +43,7 @@ api.testSessionId = async (sid) => {
 
 // 登录
 api.login = async () => {
-  const store = require('../store/main').default;
+  store = store || require('../store/main').default;
   const info = store.getters['user/getInfo'];
   let sidFromSto;
   try {

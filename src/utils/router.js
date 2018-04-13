@@ -1,9 +1,5 @@
 /* eslint-disable */
-
-import queryString from 'query-string';
-import { log } from './tools';
-
-let routes;
+import queryString from 'querystring';
 
 // 对象转字符串
 function parseUrl(location, byRouter = true) {
@@ -53,7 +49,7 @@ function _getPageInfo(path) {
   }
 }
 
-function _deepCopy(p, c) {  
+function _deepCopy(p, c) {
   var c = c || {};  
   for (var i in p) {  
     if(! p.hasOwnProperty(i)){  
@@ -96,15 +92,11 @@ async function _catchBefore (location, fr, fn) {
       }
     }
   }
-  try {
-    const to = _getPageInfo(location.path);
-    to.location = location;
-    fn &&
-      await fn(to, fr, next);
-      //to, from, next
-  } catch (e) {
-    log('router _catchBeforeEach: ', e);
-  }
+  
+  const to = _getPageInfo(location.path);
+  to.location = location;
+  fn &&
+    await fn(to, fr, next);
   
   return isNext;
 }
@@ -116,15 +108,10 @@ async function push(location, complete, fail, success) {
   const cps = getCurrentPages();
   const fr = _getPageInfo('/' + cps[cps.length-1].route);
   fr.location = _deepCopy(this.currentRoute);
-  const isNext = await _catchBefore(lct, fr, _beforeEachHandle);
-  console.log('auth: ', isNext);
-  if (!isNext) {
-    return;
-  }
+  if (!(await _catchBefore(lct, fr, _beforeEachHandle))) return;
   
   const to = _getPageInfo(lct.path);
   if (typeof to.beforeEnter === 'function') {
-    console.log('beforeEnter');
     if (!(await _catchBefore(lct, fr, to.beforeEnter))) return;
   }
   
@@ -151,7 +138,6 @@ async function replace(location, complete, fail, success) {
   
   const to = _getPageInfo(lct.path);
   if (typeof to.beforeEnter === 'function') {
-    console.log('beforeEnter');
     if (!(await _catchBefore(lct, fr, to.beforeEnter))) return;
   }
   
@@ -167,13 +153,13 @@ async function back() {
 }
 
 export let _Vue;
-let self;
+
+let routes;
 
 export default class {
   
   constructor(rts) {
-    routes = rts;
-    self = this;
+    routes = rts.routes;
   };
   
   static install(Vue) {
