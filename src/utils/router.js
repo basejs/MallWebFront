@@ -1,8 +1,9 @@
 /* eslint-disable */
 
 import queryString from 'query-string';
-import routes from '../router/index';
 import { log } from './tools';
+
+let routes;
 
 // 对象转字符串
 function parseUrl(location, byRouter = true) {
@@ -75,8 +76,9 @@ function beforeEach(fn) {
     _beforeEachHandle = fn;
 };
 
-async function _catchBeforeEach (location, fr) {
-  let isNext = true;
+//to, from, next
+async function _catchBefore (location, fr, fn) {
+  let isNext = false;
   
   function next(info, ...rest) {
     if (typeof info === 'boolean') {
@@ -88,41 +90,9 @@ async function _catchBeforeEach (location, fr) {
       isNext = false;
       if (info.replace == true) {
         delete info.replace;
-        replace(info, ...rest)
+        replace.call(fr, info, ...rest);
       } else {
-        push(info, ...rest);
-      }
-    }
-  }
-  try {
-    const to = _getPageInfo(location.path);
-    to.location = location;
-    _beforeEachHandle &&
-      await _beforeEachHandle(to, fr, next);
-      //to, from, next
-  } catch (e) {
-    log('router _catchBeforeEach: ', e);
-  }
-  
-  return isNext;
-}
-
-async function _catchBeforeEnter (location, fr, fn) {
-  let isNext = true;
-  
-  function next(info, ...rest) {
-    if (typeof info === 'boolean') {
-      isNext = info;
-    } else if (typeof info == 'number') {
-      isNext = false;
-      go(info);
-    } else {
-      isNext = false;
-      if (info.replace == true) {
-        delete info.replace;
-        replace(info, ...rest)
-      } else {
-        push(info, ...rest);
+        push.call(fr, info, ...rest);
       }
     }
   }
@@ -135,7 +105,7 @@ async function _catchBeforeEnter (location, fr, fn) {
   } catch (e) {
     log('router _catchBeforeEach: ', e);
   }
-  console.log(4, isNext);
+  
   return isNext;
 }
 
@@ -146,13 +116,16 @@ async function push(location, complete, fail, success) {
   const cps = getCurrentPages();
   const fr = _getPageInfo('/' + cps[cps.length-1].route);
   fr.location = _deepCopy(this.currentRoute);
-  
-  if (!(await _catchBeforeEach(lct, fr))) return;
+  const isNext = await _catchBefore(lct, fr, _beforeEachHandle);
+  console.log('auth: ', isNext);
+  if (!isNext) {
+    return;
+  }
   
   const to = _getPageInfo(lct.path);
   if (typeof to.beforeEnter === 'function') {
     console.log('beforeEnter');
-    if (!(await _catchBeforeEnter(lct, fr, to.beforeEnter))) return;
+    if (!(await _catchBefore(lct, fr, to.beforeEnter))) return;
   }
   
   const params = { url, complete, fail, success }
@@ -174,8 +147,13 @@ async function replace(location, complete, fail, success) {
   const cps = getCurrentPages();
   const fr = _getPageInfo('/' + cps[cps.length-1].route);
   fr.location = _deepCopy(this.currentRoute);
+  if (!(await _catchBefore(lct, fr, _beforeEachHandle))) return;
   
-  if (!(await _catchBeforeEach(lct, fr))) return;
+  const to = _getPageInfo(lct.path);
+  if (typeof to.beforeEnter === 'function') {
+    console.log('beforeEnter');
+    if (!(await _catchBefore(lct, fr, to.beforeEnter))) return;
+  }
   
   wx.redirectTo({ url, complete, fail, success });
 }
@@ -188,10 +166,17 @@ async function back() {
   go(1);
 }
 
-export let _Vue
+export let _Vue;
+let self;
 
-export default {
-  install(Vue) {
+export default class {
+  
+  constructor(rts) {
+    routes = rts;
+    self = this;
+  };
+  
+  static install(Vue) {
     if (this.installed && _Vue === Vue) return
     this.installed = true
 
@@ -223,6 +208,7 @@ export default {
     Object.defineProperty(Vue.prototype, '$route', {
       get() { return this._route }
     })
-  },
-  beforeEach,
+  };
+  
+  beforeEach = beforeEach;
 }

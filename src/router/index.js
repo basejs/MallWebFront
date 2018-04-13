@@ -32,13 +32,22 @@ module.exports = [
       navigationBarTitleText: '权限控制',
     },
     beforeEnter: async (to, from, next) => {
-      await next(false);
+      console.log('auth beforeEnter: ', to, from);
+      await next(true);
     },
   },
   {
     path: '/pages/detail/index',
     config: {
       navigationBarTitleText: '详情',
+    },
+    meta: {
+      checkLoginAuth: true,
+      mustLogin: true,
+    },
+    beforeEnter: async (to, from, next) => {
+      console.log('detail beforeEnter: ', to, from);
+      await next({ path: '/pages/me/index', isTab: true });
     },
   },
 ];

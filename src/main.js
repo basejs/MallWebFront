@@ -6,7 +6,11 @@ import App from '@/App';
 import api from '@/utils/api';
 import { showModal } from '@/utils/tools';
 
-Router.beforeEach(async (to, from, next) => {
+Vue.use(Router);
+// eslint-disable-next-line
+const router = new Router(require('@/router/index'));
+router.beforeEach(async (to, from, next) => {
+  console.log('beforeEach: ', to, from);
   if (to.meta && to.meta.checkLoginAuth) {
     const auth = await api.getAuth();
     showModal({ content: `${auth}` });
@@ -19,7 +23,6 @@ Router.beforeEach(async (to, from, next) => {
   next(true);
 });
 
-Vue.use(Router);
 
 Vue.config.productionTip = false;
 App.mpType = 'app';

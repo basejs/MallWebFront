@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <button @click="openAuth">开通权限</button>
-    <button @click="goAuth">auth</button>
+    <button @click="goAuth">detail</button>
   </div>
 </template>
 <script>
@@ -13,7 +13,7 @@
         api.openAuth();
       },
       goAuth() {
-        this.$router.push({ path: '/pages/index/index', isTab: true, query: { hasasdfa: 41242 } });
+        this.$router.push({ path: '/pages/detail/index', query: { 'from auth page': 41242 } });
       },
     },
     onShow() {

@@ -10,7 +10,7 @@
     mixins: [tabMixin],
     methods: {
       goAuth() {
-        this.$router.push({ path: '/pages/auth/index', query: { hasasdfa: 41242 } });
+        this.$router.push({ path: '/pages/auth/index', query: { 'from index page': 'easdsa' } });
       },
     },
   };
