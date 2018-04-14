@@ -9,8 +9,9 @@
   
   export default {
     methods: {
-      openAuth() {
-        api.openAuth();
+      async openAuth() {
+        console.log('openAuth');
+        console.log('openAuth: ', await api.openAuth());
       },
       goAuth() {
         this.$router.push({ path: '/pages/detail/index', query: { 'from auth page': 41242 } });

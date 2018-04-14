@@ -3,6 +3,7 @@
   
   export default {
     async onShow(options) {
+      console.log('scene');
       console.log('scene: ', options.scene, await api.getAuth(true));
     },
   };

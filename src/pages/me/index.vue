@@ -31,9 +31,10 @@
     methods: {
       async getUserInfo() {
         await api.login();
+        console.log(this.$store.getters['user/getInfo']);
       },
-      exit() {
-        this.$store.dispatch('user/EXIT');
+      async exit() {
+        await this.$store.dispatch('user/EXIT');
         console.log(this.$store.getters['user/getInfo']);
       },
       goCart() {

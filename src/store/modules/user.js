@@ -44,7 +44,7 @@ const user = {
       commit(LOGIN, info);
     },
     async [EXIT]({ commit }) {
-      api.removeStorage('sessionId');
+      await api.removeStorage('sessionId');
       commit(EXIT);
     },
   },
