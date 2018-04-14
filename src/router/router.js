@@ -10,7 +10,8 @@ Vue.use(Router);
 const router = new Router({ routes });
 router.beforeEach(async (to, from, next) => {
   if (to.meta && to.meta.checkLoginAuth) {
-    const auth = await api.getAuth();
+    const auths = await api.getAuth();
+    const auth = auths['scope.userInfo'];
     showModal({ content: `${auth}` });
     if (auth === false) {
       next(false);

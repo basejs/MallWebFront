@@ -24,14 +24,23 @@ const api = {
   getStorage,
   removeStorage,
   clearStorage,
-  openAuth,
 };
 
-api.getAuth = async (type) => {
-  store = store || require('../store/main').default;
-  const info = await getAuth();
+api.openAuth = async () => {
+  const info = (await openAuth()).authSetting;
   store.dispatch('user/' + UPDATE_AUTH, info);
-  
+  return info;
+}
+
+//  获取对应的scope权限并更新vuex，默认为ALL
+api.getAuth = async (update = false, type) => {
+  store = store || require('../store/main').default;
+  let info = store.getters['user/getInfo'].auth;
+  if (!update && !info.no) {
+    return info;
+  }
+  info = await getAuth();
+  store.dispatch('user/' + UPDATE_AUTH, info);
   const result = !type ? info : info[type];
   return result;
 }

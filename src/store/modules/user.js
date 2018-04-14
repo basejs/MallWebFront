@@ -7,7 +7,7 @@ const user = {
     info: {
       userInfo: { no: true },
       sessionId: undefined,
-      auth: {},
+      auth: { no: true },
     },
   },
   getters: {
@@ -17,16 +17,16 @@ const user = {
   },
   mutations: {
     [UPDATE_AUTH](state, info) {
-      state.info = Object.assign(this.info.auth, info);
+      state.info.auth = Object.assign({}, state.info.auth, { ...info, no: false });
     },
     [LOGIN](state, info) {
-      state.info = Object.assign({}, this.info, info);
+      state.info = Object.assign({}, state.info, info);
     },
     [EXIT](state) {
-      state.info = Object.assign({}, this.info, {
+      state.info = Object.assign({}, state.info, {
         userInfo: { no: true },
         sessionId: undefined,
-        auth: {},
+        auth: { no: true },
       });
     },
   },
