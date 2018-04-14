@@ -16,6 +16,10 @@ import { EXIT, LOGIN, UPDATE_AUTH } from '@/store/mutation-types';
 
 let store;
 
+// 针对openAuth返回的权限值（延迟生效的感觉）
+// 与随后getAuth返回的权限值（因为openAuth还未生效）不一致的问题
+let isOpenAuth = false;
+
 const api = {
   wx,
   login,
@@ -28,12 +32,21 @@ const api = {
 
 api.openAuth = async () => {
   const info = (await openAuth()).authSetting;
-  store.dispatch('user/' + UPDATE_AUTH, info);
+  isOpenAuth = info;
+  await store.dispatch('user/' + UPDATE_AUTH, info);
   return info;
 }
 
 //  获取对应的scope权限并更新vuex，默认为ALL
 api.getAuth = async (update = false, type) => {
+  // fix
+  if (isOpenAuth) {
+    let info = isOpenAuth;
+    isOpenAuth = false;
+    const result = !type ? info : info[type];
+    return result;
+  }
+  // fixed
   store = store || require('../store/main').default;
   let info = store.getters['user/getInfo'].auth;
   if (!update && !info.no) {
