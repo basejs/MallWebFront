@@ -95,8 +95,7 @@ async function _catchBefore (location, fr, fn) {
   
   const to = _getPageInfo(location.path);
   to.location = location;
-  fn &&
-    await fn(to, fr, next);
+  fn && await fn(to, fr, next);
   
   return isNext;
 }
