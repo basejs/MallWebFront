@@ -72,7 +72,7 @@ function beforeEach(fn) {
     _beforeEachHandle = fn;
 };
 
-//to, from, next
+//to, from
 async function _catchBefore (location, fr, fn) {
   let isNext = false;
   
