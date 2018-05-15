@@ -13,6 +13,7 @@
 </template>
 <script>
 /* eslint-disable */
+  import req, { urls } from '@/utils/request';
   import api from '@/utils/api';
   import { showModal } from '@/utils/tools';
   import { tabMixin } from '@/components/mixin';

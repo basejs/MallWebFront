@@ -89,11 +89,10 @@ api.login = async () => {
     }
     // 2.未登录过或者sessionId失效
     const { code } = await login();
+    const { encryptedData } = await getUserInfo(true);
     if (!code) throw('登录失败');
-    // 把code发往我方服务器
-//  sessionId = await req.post('/login', { code });
-    // 模拟
-    sessionId = 'this is sessionId';
+    // 把code\encryptedData发往我方服务器
+    sessionId = await req.post('/user', { code, encryptedData });
     const userInfo = await getUserInfo();
     await store.dispatch('user/' + LOGIN, { sessionId, userInfo });
     showToast({ title: '登录成功' });
