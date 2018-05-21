@@ -119,12 +119,10 @@ export function showModal({ title = '提示', content, showCancel = true, cancel
         if (res.confirm) {
           resolve(1);
         } else if (res.cancel) {
-          reject(0);
+          resolve(0);
         }
       },
-      fail: () => {
-        reject(false);
-      },
+      fail: reject,
     });
   });
 }

@@ -47,6 +47,7 @@ module.exports = {
     'no-empty': 'off',
     'no-trailing-spaces': 'off',
     'prefer-default-export': 'off',
+    'object-curly-newline': 'off',
   },
   globals: {
     App: true,

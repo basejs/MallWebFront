@@ -1,6 +1,7 @@
 var path = require('path')
 var fs = require('fs')
-var genEntry = require('mpvue-entry')
+// var genEntry = require('mpvue-entry')
+var MpvueEntry = require('mpvue-entry')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
@@ -11,20 +12,8 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-function getEntry (rootSrc, pattern) {
-  var files = glob.sync(path.resolve(rootSrc, pattern))
-  return files.reduce((res, file) => {
-    var info = path.parse(file)
-    var key = info.dir.slice(rootSrc.length + 1) + '/' + info.name
-    res[key] = path.resolve(file)
-    return res
-  }, {})
-}
-
 const appEntry = { app: resolve('./src/main.js') }
-const pagesEntry = getEntry(resolve('./src'), 'pages/**/main.js')
-//const entry = Object.assign({}, appEntry, pagesEntry)
-const entry = genEntry('./src/router/index.js');
+const entry = MpvueEntry.getEntry('./src/router/index.js');
 
 module.exports = {
   // 如果要自定义生成的 dist 目录里面的文件路径，
@@ -46,7 +35,8 @@ module.exports = {
       'flyio': 'flyio/dist/npm/wx',
       '@': resolve('src'),
     },
-    symlinks: false
+    symlinks: false,
+    mainFields: ['browser', 'module', 'main']
   },
   module: {
     rules: [
@@ -104,6 +94,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new MpvuePlugin()
+    new MpvuePlugin(),
+    new MpvueEntry()
   ]
 }
