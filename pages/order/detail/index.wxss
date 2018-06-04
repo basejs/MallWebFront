@@ -1,0 +1,3 @@
+.weui-form-preview__btn_disabled {
+  color: #999;
+}
